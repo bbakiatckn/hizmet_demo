@@ -1,18 +1,29 @@
 workflows:
-  flutter-android:
-    name: Hizmet Demo Android Build
+  android_and_web:
+    name: Android ve Web build
     max_build_duration: 60
+    instance_type: mac_mini_m2
+
     environment:
       flutter: stable
+
     scripts:
-      - name: Proje dosyalarını tamamla
-        script: flutter create .
-      - name: Flutter paketlerini yükle
-        script: flutter pub get
-      - name: APK oluştur
-        script: flutter build apk --release
+      - name: Proje yapisini olustur
+        script: |
+          flutter create . --platforms=android,web
+
+      - name: Paketleri indir
+        script: |
+          flutter pub get
+
+      - name: Android APK olustur
+        script: |
+          flutter build apk --debug
+
+      - name: Web build olustur
+        script: |
+          flutter build web --release
+
     artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk
-    cache:
-      cache_paths:
-        - ~/.pub-cache
+      - build/app/outputs/**/*.apk
+      - build/web/**
