@@ -2,34 +2,26 @@ workflows:
   android_and_web:
     name: Android ve Web build
     max_build_duration: 60
-    instance_type: mac_mini_m2
 
     environment:
       flutter: stable
 
     scripts:
-      - name: Yeni temiz Flutter projesi olustur
+      - name: Temiz proje platform klasörleri oluştur
         script: |
-          # Hizmet uygulamasini build icin ayri bir klasore kopyalayalim
-          flutter create hizmet_build --platforms=android,web
-          cp -R lib/. hizmet_build/lib/
-          cp pubspec.yaml hizmet_build/pubspec.yaml
+          rm -rf android
+          rm -rf web
+          flutter create . --platforms=android,web
 
       - name: Paketleri indir
-        script: |
-          cd hizmet_build
-          flutter pub get
+        script: flutter pub get
 
-      - name: Android APK olustur
-        script: |
-          cd hizmet_build
-          flutter build apk --debug
+      - name: Android APK oluştur
+        script: flutter build apk --debug
 
-      - name: Web build olustur
-        script: |
-          cd hizmet_build
-          flutter build web --release
+      - name: Web build oluştur
+        script: flutter build web --release
 
     artifacts:
-      - hizmet_build/build/app/outputs/**/*.apk
-      - hizmet_build/build/web/**
+      - build/app/outputs/**/*.apk
+      - build/web/**
