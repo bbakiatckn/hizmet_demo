@@ -5,6 +5,8 @@ workflows:
     environment:
       flutter: stable
     scripts:
+      - name: Proje dosyalarını tamamla
+        script: flutter create .
       - name: Flutter paketlerini yükle
         script: flutter pub get
       - name: APK oluştur
